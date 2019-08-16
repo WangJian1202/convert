@@ -43,7 +43,7 @@ public class JacobUtil {
                 "<p style=\"font-family: 宋体; font-size: 21px;text-align: center;\">\n" +
                 "    共<span style=\"text-decoration:underline;\">&nbsp;&nbsp;&nbsp;&nbsp;</span>页\n" +
                 "</p></body></html>";
-        String htmlFile = writeHtml(content,"C:\\Users\\yilanqunzhi\\Desktop\\");
+        String htmlFile = writeHtml(content,"C:\\Users\\yilanqunzhi\\Desktop\\","utf-8");
         JacobUtil.htmlToWord(htmlFile, wordFile);
     }
 
@@ -53,12 +53,12 @@ public class JacobUtil {
      * @param basePath
      * @return
      */
-    public static String writeHtml(String content,String basePath){
+    public static String writeHtml(String content,String basePath,String encode){
         String uuid = UUID.randomUUID().toString();
         try {
             String filePath=basePath+uuid+".html";
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fileOutputStream,"utf-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fileOutputStream,encode));
             bw.write(content);
             bw.close();
             fileOutputStream.close();
