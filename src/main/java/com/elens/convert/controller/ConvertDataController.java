@@ -1,6 +1,7 @@
 package com.elens.convert.controller;
 
 
+import com.elens.convert.doc.XwpfUtils;
 import com.elens.convert.utils.CompressedFileUtil;
 import com.elens.convert.utils.EncodingDetect;
 import com.elens.convert.utils.JacobUtil;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -232,6 +234,35 @@ public class ConvertDataController {
 
         }
 
+
+    }
+
+
+    @RequestMapping(value = "/getUnderLine", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getUnderLine(MultipartFile file, String title) {
+        File saveFile = null;
+        String projectPath = System.getProperty("user.dir");
+//            上传文件保存路径
+        String path = projectPath + "\\upload\\";
+        try {
+            String name = file.getOriginalFilename();
+            System.out.println("name:" + name);
+            String suffix = name.split("\\.")[1];
+            if(!"docx".equals(suffix)){
+                return "必须上传docx格式文件";
+            }
+//          将上传文件保存到upload路径下
+            saveFile = new File(path, name);
+            FileUtils.copyInputStreamToFile(file.getInputStream(), saveFile);
+            ArrayList<LinkedHashMap<Object, Object>> result = XwpfUtils.getResultByTitle(title, saveFile.getAbsolutePath());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            delZSPic(path);
+        }
+        return "";
 
     }
 
