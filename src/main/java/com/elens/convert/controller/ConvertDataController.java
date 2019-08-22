@@ -37,6 +37,7 @@ public class ConvertDataController {
         File filePath = null;
         File saveFile = null;
         String uploadPath = System.getProperty("user.dir") + "\\upload\\";
+//        String uploadPath = request.getSession().getServletContext().getRealPath("");
         try {
             String name = uploadFile.getOriginalFilename();
             saveFile = new File(uploadPath, name);
@@ -112,12 +113,13 @@ public class ConvertDataController {
 
     @RequestMapping(value = "/exportHtml", method = RequestMethod.POST)
     @ResponseBody
-    public void exportHtml(MultipartFile file, HttpServletResponse response) {
+    public void exportHtml(MultipartFile file,HttpServletRequest request, HttpServletResponse response) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         File targetFile = null;
         File saveFile = null;
         String projectPath = System.getProperty("user.dir");
+//        String projectPath = request.getSession().getServletContext().getRealPath("");
 //            上传文件保存路径
         String path = projectPath + "\\upload\\";
 //            生成html文件及其图片文件
@@ -176,12 +178,13 @@ public class ConvertDataController {
 
     @RequestMapping(value = "/exportHtml2", method = RequestMethod.POST)
     @ResponseBody
-    public void exportHtml2(MultipartFile file, HttpServletResponse response) {
+    public void exportHtml2(MultipartFile file,HttpServletRequest request, HttpServletResponse response) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         File targetFile = null;
         File saveFile = null;
         String projectPath = System.getProperty("user.dir");
+//        String projectPath = request.getSession().getServletContext().getRealPath("");
 //            上传文件保存路径
         String path = projectPath + "\\upload\\";
 //            生成html文件及其图片文件
@@ -269,7 +272,7 @@ public class ConvertDataController {
 
     public Boolean word2htmlByPython(String inputPath,String outputPath) {
         String property = System.getProperty("user.dir");
-        String pythonFile = property + "\\python\\" + "html2word.py";
+        String pythonFile = property + "\\python\\" + "word2html.py";
         String[] commands = new String[]{"python", pythonFile, inputPath, outputPath};
         System.out.println(StringUtils.join(commands, " "));
         boolean flag = false;

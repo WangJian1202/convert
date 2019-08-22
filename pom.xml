@@ -52,6 +52,13 @@
             <version>1.2.47</version>
         </dependency>
 
+        <!--jacob-->
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.19</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.ant/ant -->
         <dependency>
             <groupId>org.apache.ant</groupId>
