@@ -47,6 +47,22 @@ public class JacobUtil {
         JacobUtil.htmlToWord(htmlFile, wordFile);
     }
 
+
+
+    public static String writeHtml(String content,String basePath){
+        String uuid = UUID.randomUUID().toString();
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(basePath+uuid+".html");
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fileOutputStream,"utf-8"));
+            bw.write(content);
+            bw.close();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return basePath+uuid+".html";
+    }
+
     /**
      * 将html字符串写入html文件
      * @param content

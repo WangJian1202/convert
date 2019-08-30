@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -90,6 +91,64 @@ public class ConvertDataController {
                 }
                 if (filePath != null) {
                     filePath.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    @RequestMapping(value="/convertWord",method=RequestMethod.POST)
+    @ResponseBody
+    public void convertWord(String content,HttpServletResponse response) {
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        File filePath = null;
+        try {
+//            name = URLDecoder.decode(name,"utf-8");
+             String name = String.valueOf(System.currentTimeMillis());
+            if(!content.equals("")){
+                if(!content.contains("<body>")) {
+                    content = "<body>" + content + "</body>";
+                }
+                if(!content.contains("</html>")) {
+                    content = "<html>" + content + "</html>";
+                }
+                String downloadPath = System.getProperty("user.dir") + "\\" + System.currentTimeMillis() + "\\";
+                filePath = new File(downloadPath);
+                if (!filePath.exists()) {
+                    filePath.mkdirs();
+                }
+                String htmlFile = JacobUtil.writeHtml(content,downloadPath);
+                System.out.println(htmlFile);
+                String wordFile = downloadPath + name + ".docx";
+                JacobUtil.htmlToWord(htmlFile, wordFile);
+                File file = new File(wordFile);
+                response.setContentType("application/x-msdownload;");
+                response.setHeader("Content-disposition", "attachment;filename*=utf-8'zh_cn'" + URLEncoder.encode(name + ".docx", "UTF-8"));
+                response.setHeader("Content-Length", String.valueOf(file.length()));
+                bis = new BufferedInputStream(new FileInputStream(file));
+                bos = new BufferedOutputStream(response.getOutputStream());
+                byte[] buff = new byte[4096];
+                int bytesRead;
+                while (-1 != (bytesRead = bis.read(buff, 0, buff.length)))
+                    bos.write(buff, 0, bytesRead);
+                bos.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+                if(filePath != null){
+//                    filePath.delete();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
