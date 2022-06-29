@@ -32,7 +32,7 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <!--<version>3.17</version>-->
-            <version>3.8</version>
+            <version>4.1.1</version>
         </dependency>
         <!--word文件操作-->
         <dependency>
